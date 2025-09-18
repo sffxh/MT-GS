@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-55V1E709SK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-55V1E709SK');
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="description"
+    content="InstantSplat, unifies dense stereo priors with 3D-GS to build 3D Gaussians of large-scale scenes from sparse-view and pose-free images in less than 1 minute. ">
+  <meta name="keywords" content="Instantsplat, Gaussian Splatting, Gaussian, LightGaussian">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MT-GS
+  </title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/xxxxx"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/script.js"></script>
+
+</head>
+
+<body>
+
+  <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav> -->
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span
+                style="color: #4CAF50 ;font-weight: bolder;"> </span>Learning Motion Trends in Gaussian Splatting for Monocular Dynamic Reconstruction</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">  
+                <a href="https://sffxh.github.io">Rui Xie</a><sup>1</sup><sup>&dagger;</sup>,</span>
+              <span class="author-block">
+                <a href="">Bingbing Hu</a><sup>1</sup><sup>&dagger;</sup>,</span>
+              <span class="author-block">
+                <span class="author-block">
+                <a href="https://orcid.org/0009-0008-6235-7175">Yukun Cui</a><sup>2</sup>,</span>
+              <span class="author-block">                
+                <a href="">Mingyu Shao</a><sup>1</sup>,</span>
+              <span class="author-block"></span>
+                <a href="https://cdmc.xmu.edu.cn/info/1010/1062.htm">Junfeng Yao</a><sup>1</sup><sup>*</sup>,</span>
+              <!-- <span class="author-block">
+                <a href="">Gim Hee Lee </a><sup>2</sup></span> -->
+          </div>
+
+          <!-- affiliations -->
+          <div class="subtitle is-size-5">
+          <!-- <div class="is-size-5 publication-authors"> -->
+            <sup>1</sup>  Xiamen University &nbsp;<br>
+            <sup>2</sup> Lancaster University <br>
+            <sup>*</sup> Corresponding Author  &nbsp;
+			<sup>&dagger;</sup> Equal Contribution <br>
+
+            <!-- <span class="author-block"><sup>1</sup>The University of Texas at Austin</span>
+            <span class="author-block"><sup>2</sup>Nvidia</span> <br>
+            <span class="author-block"><sup>3</sup>Xiamen University</span> <br>
+            <span class="author-block"><sup>4</sup>Georgia Institute of Technology</span> <br>
+            <span class="author-block"><sup>5</sup>Stanford University</span> <br>
+            <span class="author-block"><sup>6</sup>University of Southern California</span> <br>
+            <span class="author-block"><sup>*</sup>denotes equal contribution</span> -->
+          </div>
+
+<!-- TODO: update paper and video link once upload -->
+          <div class="column has-text-centered">
+            <!-- <div class="publication-links"> -->
+              <!-- PDF Link. -->
+              <span class="link-block">
+              <a href=""
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Paper is coming soon</span>
+              </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code is coming soon</span>
+                </a>
+              </span>
+            </div>
+
+            
+          <!-- Video Link. -->
+          <!-- <span class="link-block">
+                  <a href="https://youtu.be/470hul75bSM" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a> -->
+          </span>
+          <!-- Code Link. -->
+          <!-- <span class="link-block">
+                  <a href="https://github.com/VITA-Group/Instantsplat"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+        </div>
+
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+<!-- 
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class=" carousel results-carousel">        
+          
+          
+          
+          <div class="item item-cut_roasted_beef-ours">
+            <video poster="" id="cut_roasted_beef" autoplay controls muted loop playsinline style="height: 100%; width: 100%;">
+              <source src="./dynamic/videos/cut_roasted_beef-ours.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          
+          <div class="item item-flame_steak-ours">
+            <video poster="" id="flame_steak" autoplay controls muted loop playsinline style="height: 100%; width: 100%;">
+              <source src="./dynamic/videos/flame_steak-ours.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div style="height: 20px;"></div>
+          <div class="item item-sear_steak-ours">
+            <video poster="" id="sear_steak" autoplay controls muted loop playsinline style="height: 100%; width: 100%;">
+              <source src="./dynamic/videos/sear_steak-ours.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          
+          
+      </div>
+    </div>
+</div>
+</section> -->
+    
+
+  <!-- <script>
+    new BeforeAfter({
+      class:"item item-cut_roasted_beef-ours"
+    });
+    new BeforeAfter({
+      class:"item item-flame_steak-ours"
+    });
+    new BeforeAfter({
+      class:"item item-sear_steak-ours"
+    });
+    new BeforeAfter({
+      class:"item item-coffee_martini-ours"
+    });
+    new BeforeAfter({
+      class:"item item-flame_salmon-ours"
+    });
+
+  </script> -->
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Overview</h2>
+          <div class="content has-text-justified">
+
+            <!-- <p>
+              While novel view synthesis (NVS) from a sparse set of images has made substantial progress in 3D computer vision, it requires an accurate initial estimation of camera parameters using Structure-from-Motion (SfM). However, SfM processes are time-consuming and prove unreliable in sparse-view scenarios where matched features are scarce. Moreover, the recent  point-based representation (3D Gaussian Splatting or 3D-GS) is substantially dependent on the precision of SfM outcomes, leading to significant accumulated errors and limited generalization capability across varied datasets. In this study, we introduce a novel and streamlined framework to enhance robust NVS from sparse-view images.
+            </p>
+            <p>
+              Our framework, <strong>InstantSplat</strong>, integrates dense stereo predictions with point-based representations to construct 3D Gaussians of large-scale scenes from sparse-view data within seconds. Specifically, InstantSplat generates densely populated surface points across all training views and determines the initial camera parameters using pixel-aligned points. Nonetheless, the non-uniform distribution of initial points from all pixels results in an excessive number of Gaussians,  ielding a sub-optimal scene representation that compromises rendering speed and quality. To address this issue, we employ a highly efficient grid-based, confidence-aware Farthest Point Sampling to strategically position point primitives at representative locations in parallel. Having the uniformly sampled surface points, we can initialize densely covered Gaussians and adopt a streamlined optimization framework to adapt the camera parameters and attributes of 3D Gaussians efficiently, instead of utilizing the complex Adaptive Density Control with manually tuned hyperparameters in 3D-GS. InstantSplat achieves a substantial reduction in training time, from <u></u>hours to mere seconds</u>, and demonstrates robust performance across various numbers of views in diverse datasets.
+            </p> -->
+            <p>
+                With the advancement of 3D Gaussian Splatting, dynamic scene reconstruction has achieved significant progress. However, previous approaches typically model deformations independently for each frame, lacking spatiotemporal consistency and limiting reconstruction quality. In addition, existing methods still face challenges in monocular settings, particularly when handling complex motions. To address these issues, we propose a novel framework (MT-GS) for monocular dynamic reconstruction. Our framework captures motion trends of Gaussian primitives from adjacent frames and leverages them to enhance both Gaussian and temporal feature representations via an attention mechanism. Moreover, we further decompose the overall deformations into coarse and fine components to better model complex motions. Finally, we introduce geometric priors from depth and normal maps to regularize the optimization process. Extensive experiments on various real-world datasets demonstrate that our method achieves state-of-the-art reconstruction quality.
+            </p>
+
+
+
+          </div>
+        </div>
+      </div>
+
+     
+      <!-- <div class="column is-four-fifths"></div> -->
+      <div class="columns is-centered">
+       <div class="column is-quarter has-text-centered">
+        <h2 class="title is ours-4">Video 1</h2>
+        <video controls style="max-width: 100%;">
+          <source src="./dynamic/videos/as.mp4" type="video/mp4">
+          
+          Your browser does not support the video.
+        </video>
+
+      </div>
+	    <div class="column is-quarter has-text-centered">
+        <h2 class="title is ours-4">Video 2</h2>
+        <video controls style="max-width: 100%;">
+          <source src="./dynamic/videos/cup.mp4" type="video/mp4">
+          Your browser does not support the video.
+        </video>
+       
+      </div>
+
+       <div class="column is-quarter has-text-centered">
+        <h2 class="title is ours-4">Video 3</h2>
+        <video controls style="max-width: 100%;">
+          <source src="./dynamic/videos/press.mp4" type="video/mp4">
+          Your browser does not support the video.
+        </video>
+       
+      </div>
+
+       <div class="column is-quarter has-text-centered">
+        <h2 class="title is ours-4">Video 4</h2>
+        <video controls style="max-width: 100%;">
+          <source src="./dynamic/videos/bell.mp4" type="video/mp4">
+          Your browser does not support the video.
+        </video>
+       
+      </div>
+
+     </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Concurrent Work. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="content has-text-justified">
+            <img src="./dynamic/result/Framework.png">
+            <!-- <img src="./dynamic/result/Framework4.png"> -->
+            <p><strong>Architecture of our MT-GS framework. </strong>We capture motion trends from adjacent frames and leverage them to enhance Gaussian embedding and temporal embedding via the TAM attention module.</p>
+            <!-- <p><strong>Overall Framework of InstantSplat</strong>. Beginning with sparse, unposed images, we generate a pixel-wise multi-view stereo dense point cloud utilizing
+              an off-the-shelf model along with computed initial camera poses. We conduct Adaptive Dense Surface Initialization employing a voxel-wise, confidence-aware
+              point downsampler to minimize redundancy and achieve uniform sampling. A streamlined Joint Optimization process without ADC is then implemented to
+              adjust the Gaussian and camera parameters, ensuring consistency across multi-view images. All these processes are executed in a matter of seconds.</p> -->
+
+          </div>
+        </div>
+      </div>
+      <!--/ Concurrent Work. -->
+
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Result</h2>
+          <!-- <div class="content has-text-justified"> -->
+            <img src="./dynamic/result/nerf-ds.png">
+            <img src="./dynamic/result/hypernerf.png">
+            <div class="content has-text-justified">
+            <p>Qualitative analysis of novel view rendering on the Nerf-DS & HyperNerf dataset , comparing the detail information of reconstructed images from different algorithms.</p>
+
+            <!-- <img src="./dynamic/result/nerf-ds.png">
+            <p>Qualitative analysis of novel view rendering on the NeRF-DS dataset, comparing the detail information of reconstructed images from different algorithms.</p> -->
+            </div>
+
+
+          <!-- <div class="content has-text-justified">
+            <img src="./static/images/cfgs_vs_ours.png">
+            <p>We study the impact of the training view number to the rendering quality. Comparisons are between our
+              model and CF-3DGS, on the Tanks and Temples dataset</p>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    
+
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop ">
+      <div class=" has-text-centered">
+        <h2 class="title is-3">Visual Comparisons</h2>
+        <div class="content has-text-justified">
+          <p>
+
+          </p>
+        </div>
+        <div class="columns is-centered">
+        
+          <div class="column">
+            <div class="content">
+              <div class="columns is-centered">
+                <div class="column is-full-width">
+
+                  <div id="example1" class="bal-container-small">
+
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_press_354.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                        Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset">
+                        <img src="./dynamic/visual_comparisons/scgs_press_354.png">
+                        <div class="bal-beforePosition beforeLabel">
+                          SC-GS
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left:96.4968152866242%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+
+                  </div>
+
+                  <div id="example2" class="bal-container-small">
+
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_press_354.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                       Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset">
+                        <img src="./dynamic/visual_comparisons/4dgs_press_354.png">
+                        <div class="bal-beforePosition beforeLabel">
+                          4DGS
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left:96.4968152866242%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+
+                  </div>
+                  
+                  <div id="example3" class="bal-container-small">
+
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_press_354.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                        Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset">
+                        <img src="./dynamic/visual_comparisons/d3dgs_press_354.png">
+                        <div class="bal-beforePosition beforeLabel">
+                          D3DGS
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left:96.4968152866242%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+
+
+
+
+
+
+
+
+          <!--/ Visual Effects. -->
+
+          <!-- Matting. -->
+          <div class="column">
+            <div class="columns is-centered">
+              <div class="column content">
+
+                <div id="example4" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_plate_250.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                       Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset" style="width: 240px;">
+                        <img src="./dynamic/visual_comparisons/scgs_plate_250.png">
+                        <div class="bal-beforePosition beforeLabel">
+                       SC-GS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                <div id="example5" class="bal-container-small">
+                  <div class="bal-after">
+                    <img src="./dynamic/visual_comparisons/ours_plate_250.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:62.10191082802548%;">
+                    <div class="bal-before-inset" style="width: 240px;">
+                      <img src="./dynamic/visual_comparisons/4dgs_plate_250.png">
+                      <div class="bal-beforePosition beforeLabel">
+                      4DGS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                <div id="example6" class="bal-container-small">
+                  <div class="bal-after">
+                    <img src="./dynamic/visual_comparisons/ours_plate_250.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:62.10191082802548%;">
+                    <div class="bal-before-inset" style="width: 240px;">
+                      <img src="./dynamic/visual_comparisons/d3dgs_plate_250.png">
+                      <div class="bal-beforePosition beforeLabel">
+                      D3DGS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+           <div class="column">
+            <div class="columns is-centered">
+              <div class="column content">
+
+                <div id="example7" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_bell_350.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                       Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset" style="width: 240px;">
+                        <img src="./dynamic/visual_comparisons/scgs_bell_350.png">
+                        <div class="bal-beforePosition beforeLabel">
+                        SC-GS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                <div id="example8" class="bal-container-small">
+                  <div class="bal-after">
+                    <img src="./dynamic/visual_comparisons/ours_bell_350.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:62.10191082802548%;">
+                    <div class="bal-before-inset" style="width: 240px;">
+                      <img src="./dynamic/visual_comparisons/4dgs_bell_350.png">
+                      <div class="bal-beforePosition beforeLabel">
+                       4DGS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                <div id="example9" class="bal-container-small">
+                  <div class="bal-after">
+                    <img src="./dynamic/visual_comparisons/ours_bell_350.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:62.10191082802548%;">
+                    <div class="bal-before-inset" style="width: 240px;">
+                      <img src="./dynamic/visual_comparisons/d3dgs_bell_350.png">
+                      <div class="bal-beforePosition beforeLabel">
+                      D3DGS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+				
+              </div>
+            </div>
+          </div>
+
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop ">
+      <div class=" has-text-centered">
+        <!-- <h2 class="title is-3">Visual Comparisons</h2> -->
+        <div class="content has-text-justified">
+          <p>
+
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <!-- Visual Effects. -->
+          <div class="column">
+            <div class="content">
+              <div class="columns is-centered">
+                <div class="column is-full-width">
+
+                  <div id="example10" class="bal-container-big">
+
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_chicken_160.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                        Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset" style="width: 512px;">
+                        <img src="./dynamic/visual_comparisons/4dgs_chicken_160.png">
+                        <div class="bal-beforePosition beforeLabel">
+                          4DGS
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left:96.4968152866242%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+
+                  </div>
+
+                  <div id="example11" class="bal-container-big">
+
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_chicken_160.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                       Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset" style="width: 512px;">
+                        <img src="./dynamic/visual_comparisons/d3dgs_chicken_160.png">
+                        <div class="bal-beforePosition beforeLabel">
+                        D3DGS
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="bal-handle" style="left:96.4968152866242%;">
+                      <span class=" handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+
+                  </div>
+                  
+                 
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!--/ Visual Effects. -->
+
+          <!-- Matting. -->
+          <div class="column">
+            <div class="columns is-centered">
+              <div class="column content">
+
+                <div id="example12" class="bal-container-big">
+                    <div class="bal-after">
+                      <img src="./dynamic/visual_comparisons/ours_banana_300.png">
+                      <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                       Ours
+                      </div>
+                    </div>
+
+                    <div class="bal-before" style="width:96.4968152866242%;">
+                      <div class="bal-before-inset" style="width: 512px;">
+                        <img src="./dynamic/visual_comparisons/4">
+                        <div class="bal-beforePosition beforeLabel">
+                       4DGS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                <div id="example13" class="bal-container-big">
+                  <div class="bal-after">
+                    <img src="./dynamic/visual_comparisons/ours_banana_300.png">
+                    <div class="bal-afterPosition afterLabel" style="z-index:1;">
+                      Ours
+                    </div>
+                  </div>
+
+                  <div class="bal-before" style="width:62.10191082802548%;">
+                    <div class="bal-before-inset" style="width: 512px;">
+                      <img src="./dynamic/visual_comparisons/d3dgs_banana_300.png">
+                      <div class="bal-beforePosition beforeLabel">
+                        D3DGS
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bal-handle" style="left:62.10191082802548%;">
+                    <span class=" handle-left-arrow"></span>
+                    <span class="handle-right-arrow"></span>
+                  </div>
+
+                </div>
+
+                
+
+				
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+  <script>
+    new BeforeAfter({
+      id: '#example1'
+    });
+    new BeforeAfter({
+      id: '#example2'
+    });
+    new BeforeAfter({
+      id: '#example3'
+    });
+    new BeforeAfter({
+      id: '#example4'
+    });
+    new BeforeAfter({
+      id: '#example5'
+    });
+    new BeforeAfter({
+      id: '#example6'
+    });
+    new BeforeAfter({
+      id: '#example7'
+    });
+    new BeforeAfter({
+      id: '#example8'
+    });
+    new BeforeAfter({
+      id: '#example9'
+    });
+    new BeforeAfter({
+      id: '#example10'
+    });
+    new BeforeAfter({
+      id: '#example11'
+    });
+    new BeforeAfter({
+      id: '#example12'
+    });
+    new BeforeAfter({
+      id: '#example13'
+    });
+
+  </script>
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            Needs update
+          </p>
+         
+        </div>
+      </div>
+    </div>
+
+  </div> -->
+</section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code></code></pre>
+    </div>
+  </section>
+  
+
+  <!-- TODO: update the arxiv link and github -->
+  <!-- <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              We thank the authors of
+              We thank the authors of <a href="https://nerfies.github.io/">Nerfies</a> that kindly open sourced the
+              template of this website.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+</body>
+
+</html>
